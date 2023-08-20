@@ -13,7 +13,7 @@ steps:
 - task: NodeTool@0
   inputs:
     versionSource: 'spec'
-    versionSpec: '14.x' # Change Node.js version to a suitable one for your Angular project
+    versionSpec: '16.x' # Change Node.js version to a suitable one for your Angular project
     checkLatest: true
   displayName: 'Install Node.js'
 
