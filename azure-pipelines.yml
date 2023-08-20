@@ -12,8 +12,7 @@ variables:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSource: 'spec'
-    versionSpec: '16.x' # Change Node.js version to a suitable one for your Angular project
+    versionSpec: '16.x' # Update to Node.js 16.x
     checkLatest: true
   displayName: 'Install Node.js'
 
@@ -31,10 +30,10 @@ steps:
     npm ci
   displayName: 'Install dependencies'
 
-# Build the Angular app (change the build script command)
+# Build the Angular app for production
 - script: |
-    ng build --prod
-  displayName: 'Build Angular app'
+    ng build --configuration=production
+  displayName: 'Build Angular app for production'
 
 # Run tests (assuming you have some tests configured, replace with Angular testing commands)
 - script: |
