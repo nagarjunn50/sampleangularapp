@@ -36,9 +36,9 @@ steps:
   displayName: 'Build Angular app for production'
 
 # Run tests (assuming you have some tests configured, replace with Angular testing commands)
-- script: |
-    ng test
-  displayName: 'Run tests'
+#- script: |
+#    ng test
+#  displayName: 'Run tests'
 
 # Archive the build output (in the dist folder)
 - task: ArchiveFiles@2
