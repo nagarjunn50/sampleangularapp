@@ -1,0 +1,57 @@
+trigger:
+- main
+
+pool:
+  name: Default
+
+variables:
+  buildVersion: '1.0.$(Build.BuildID)'
+  artifactName: 'angular-app-build'
+  npm_config_cache: $(Pipeline.Workspace)/.npm
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSource: 'spec'
+    versionSpec: '14.x' # Change Node.js version to a suitable one for your Angular project
+    checkLatest: true
+  displayName: 'Install Node.js'
+
+# Cache npm packages
+- task: Cache@2
+  inputs:
+    key: 'npm | "$(Agent.OS)" | package-lock.json'
+    restoreKeys: |
+      npm | "$(Agent.OS)"
+    path: $(npm_config_cache)
+  displayName: 'Cache NPM Packages'
+
+# Install app dependencies
+- script: |
+    npm ci
+  displayName: 'Install dependencies'
+
+# Build the Angular app (change the build script command)
+- script: |
+    ng build --prod
+  displayName: 'Build Angular app'
+
+# Run tests (assuming you have some tests configured, replace with Angular testing commands)
+- script: |
+    ng test
+  displayName: 'Run tests'
+
+# Archive the build output (in the dist folder)
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: $(Build.ArtifactStagingDirectory)/$(artifactName).zip
+    replaceExistingArchive: true
+  displayName: 'Archive files'
+
+# Publish the artifact for deployment
+- publish: $(Build.ArtifactStagingDirectory)
+  artifact: $(artifactName)
+  displayName: 'Publish Artifact'
